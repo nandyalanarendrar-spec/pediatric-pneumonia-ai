@@ -17,7 +17,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# CUSTOM STYLING (VIBRANT BOLD COLORS & GLASSMORPHISM)
+# CUSTOM STYLING (VIBRANT BOLD COLORS & ENLARGED UPLOAD ZONE)
 # ==============================================================================
 st.markdown("""
 <style>
@@ -51,16 +51,16 @@ st.markdown("""
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.8rem;
     }
     .badge {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding: 5px 12px;
+        padding: 6px 14px;
         border-radius: 9999px;
         font-size: 0.82rem;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
@@ -85,116 +85,136 @@ st.markdown("""
         border: 1px solid rgba(251, 191, 36, 0.4);
     }
 
+    /* PROMINENT UPLOAD CONTAINER ON MAIN PAGE */
+    .upload-container {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+        border: 2px solid #38BDF8;
+        border-radius: 20px;
+        padding: 24px 28px;
+        box-shadow: 0 0 30px rgba(56, 189, 248, 0.25);
+        margin-bottom: 30px;
+    }
+    
+    .upload-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+    .upload-title {
+        color: #38BDF8;
+        font-size: 1.4rem;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -0.3px;
+    }
+    .upload-sub {
+        color: #CBD5E1;
+        font-size: 0.95rem;
+        margin: 0 0 16px 0;
+    }
+
+    /* CUSTOM BIG FILE UPLOADER STYLING */
+    [data-testid="stFileUploader"] {
+        background: rgba(15, 23, 42, 0.7) !important;
+        border: 2px dashed #38BDF8 !important;
+        border-radius: 14px !important;
+        padding: 16px 20px !important;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.15) !important;
+        transition: all 0.3s ease !important;
+    }
+    [data-testid="stFileUploader"]:hover {
+        border-color: #818CF8 !important;
+        box-shadow: 0 0 25px rgba(129, 140, 248, 0.3) !important;
+    }
+    [data-testid="stFileUploader"] button {
+        background: linear-gradient(135deg, #0284C7 0%, #4F46E5 100%) !important;
+        color: #FFFFFF !important;
+        font-weight: 800 !important;
+        font-size: 1.05rem !important;
+        padding: 10px 24px !important;
+        border-radius: 10px !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4) !important;
+    }
+
     /* Metric Cards */
     .kpi-card {
-        background: rgba(30, 41, 59, 0.7);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: rgba(30, 41, 59, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 14px;
-        padding: 16px;
+        padding: 18px 14px;
         text-align: center;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     }
     .kpi-label {
         font-size: 0.8rem;
-        font-weight: 700;
+        font-weight: 800;
         color: #94A3B8;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
     .kpi-value {
-        font-size: 1.8rem;
+        font-size: 1.85rem;
         font-weight: 900;
         line-height: 1.2;
     }
 
     /* Diagnosis Alert Banners */
     .alert-box-pneumonia {
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(185, 28, 28, 0.35) 100%);
-        border: 2px solid #EF4444;
-        border-radius: 16px;
-        padding: 22px 24px;
-        box-shadow: 0 0 25px rgba(239, 68, 68, 0.35);
-        margin-bottom: 20px;
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.25) 0%, rgba(185, 28, 28, 0.4) 100%);
+        border: 2.5px solid #EF4444;
+        border-radius: 18px;
+        padding: 24px 28px;
+        box-shadow: 0 0 35px rgba(239, 68, 68, 0.4);
+        margin-bottom: 22px;
     }
     .alert-box-normal {
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.35) 100%);
-        border: 2px solid #10B981;
-        border-radius: 16px;
-        padding: 22px 24px;
-        box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
-        margin-bottom: 20px;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.4) 100%);
+        border: 2.5px solid #10B981;
+        border-radius: 18px;
+        padding: 24px 28px;
+        box-shadow: 0 0 35px rgba(16, 185, 129, 0.4);
+        margin-bottom: 22px;
     }
     .alert-box-risk {
-        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(217, 119, 6, 0.35) 100%);
-        border: 2px solid #F59E0B;
-        border-radius: 16px;
-        padding: 22px 24px;
-        box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
-        margin-bottom: 20px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.25) 0%, rgba(217, 119, 6, 0.4) 100%);
+        border: 2.5px solid #F59E0B;
+        border-radius: 18px;
+        padding: 24px 28px;
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.4);
+        margin-bottom: 22px;
     }
 
     .alert-title-red {
         color: #FF4D4D;
-        font-size: 2.1rem;
+        font-size: 2.3rem;
         font-weight: 900;
         margin: 0 0 8px 0;
         letter-spacing: -0.5px;
     }
     .alert-title-green {
         color: #10B981;
-        font-size: 2.1rem;
+        font-size: 2.3rem;
         font-weight: 900;
         margin: 0 0 8px 0;
         letter-spacing: -0.5px;
     }
     .alert-title-amber {
         color: #FBBF24;
-        font-size: 2.1rem;
+        font-size: 2.3rem;
         font-weight: 900;
         margin: 0 0 8px 0;
         letter-spacing: -0.5px;
     }
 
     .alert-desc {
-        color: #F1F5F9;
-        font-size: 1.05rem;
+        color: #F8FAFC;
+        font-size: 1.1rem;
         font-weight: 600;
         margin: 0;
         line-height: 1.5;
-    }
-
-    /* Welcome Hero Box */
-    .welcome-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 1px solid rgba(56, 189, 248, 0.3);
-        border-radius: 18px;
-        padding: 32px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-        margin-top: 15px;
-    }
-    
-    /* Guide step cards */
-    .step-card {
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 12px;
-        padding: 20px;
-        text-align: center;
-        height: 100%;
-    }
-    .step-num {
-        display: inline-block;
-        width: 36px;
-        height: 36px;
-        line-height: 36px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #38BDF8, #818CF8);
-        color: #0F172A;
-        font-weight: 900;
-        font-size: 1.1rem;
-        margin-bottom: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -293,52 +313,20 @@ def overlay_heatmap(img_rgb, cam):
     return np.clip(jet * 0.45 + img_rgb * 0.55, 0, 255).astype(np.uint8)
 
 # ==============================================================================
-# SIDEBAR CONTROLS & MODEL TELEMETRY
+# SIDEBAR CLINICAL TELEMETRY
 # ==============================================================================
 with st.sidebar:
     st.markdown("""
-    <div style="text-align: center; margin-bottom: 15px;">
+    <div style="text-align: center; margin-bottom: 20px;">
         <img src="https://img.icons8.com/fluency/96/lungs.png" width="80"/>
-        <h2 style="font-weight: 800; color: #38BDF8; margin: 5px 0 0 0;">CLINICAL CONTROL</h2>
-        <span style="font-size: 0.85rem; color: #94A3B8; font-weight: 600;">Pediatric Radiograph Suite</span>
+        <h2 style="font-weight: 800; color: #38BDF8; margin: 8px 0 0 0;">CLINICAL METRICS</h2>
+        <span style="font-size: 0.85rem; color: #94A3B8; font-weight: 600;">Pediatric Radiograph Telemetry</span>
     </div>
     """, unsafe_allow_html=True)
     
-    st.markdown("### 🩻 **Radiograph Input**")
-    input_mode = st.radio(
-        "Choose examination method:",
-        ["Choose Sample Image", "Upload Radiograph"],
-        index=0
-    )
-    
-    selected_image = None
-    sample_choice_name = None
-    
-    if input_mode == "Choose Sample Image":
-        test_dir = "test_images"
-        if os.path.exists(test_dir):
-            sample_files = sorted([f for f in os.listdir(test_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
-            if sample_files:
-                sample_choice = st.selectbox("📂 Select from 100 Sample Radiographs:", sample_files)
-                sample_choice_name = sample_choice
-                selected_image = Image.open(os.path.join(test_dir, sample_choice))
-        else:
-            st.info("test_images folder not found.")
-            
-    else:
-        uploaded_file = st.file_uploader(
-            "📤 Upload Pediatric Chest X-Ray",
-            type=["png", "jpg", "jpeg"],
-            help="Supported formats: DICOM-exported PNG, JPG, or JPEG"
-        )
-        if uploaded_file is not None:
-            selected_image = Image.open(uploaded_file)
-            sample_choice_name = uploaded_file.name
-
-    st.markdown("---")
     st.markdown("### 📊 **Validation Benchmarks**")
     st.markdown("""
-    <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.08);">
+    <div style="background: rgba(15, 23, 42, 0.6); padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08);">
         <p style="margin: 0 0 8px 0; color: #E2E8F0; font-size: 0.9rem;"><b>Architecture:</b> <span style="color: #38BDF8; font-weight: 800;">ResNet50V2 Pro</span></p>
         <p style="margin: 0 0 8px 0; color: #E2E8F0; font-size: 0.9rem;"><b>Head:</b> <span style="color: #C084FC; font-weight: 800;">Dual Global Pooling</span></p>
         <p style="margin: 0 0 8px 0; color: #E2E8F0; font-size: 0.9rem;"><b>Sensitivity (Recall):</b> <span style="color: #34D399; font-weight: 800;">98.4%</span></p>
@@ -355,14 +343,16 @@ with st.sidebar:
     - 🟡 **Indeterminate:** `{LOWER_BOUND} - {UPPER_BOUND}`
     - 🔴 **Pneumonia:** `> {UPPER_BOUND}`
     """)
+    
+    st.markdown("---")
+    st.caption("Investigational Clinical Decision Support Tool v2.0")
 
 # ==============================================================================
-# MAIN PAGE HEADER & SYSTEM STATUS BADGES
+# MAIN PAGE HEADER & STATUS BADGES
 # ==============================================================================
 st.markdown('<div class="hero-title">🫁 Pediatric Pneumonia Diagnostic AI</div>', unsafe_allow_html=True)
 st.markdown('<div class="hero-subtitle">High-Sensitivity Chest Radiograph Triage & Explainable Grad-CAM Localization</div>', unsafe_allow_html=True)
 
-# Status Badges
 st.markdown("""
 <div class="badge-bar">
     <span class="badge badge-green">● AI SYSTEM ONLINE</span>
@@ -373,50 +363,69 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# MAIN CONTENT AREA
+# BIG, PROMINENT, FRONT-AND-CENTER INPUT SUITE (EASY FOR ALL USERS)
 # ==============================================================================
-if selected_image is None:
-    st.markdown("""
-    <div class="welcome-card">
-        <h2 style="color: #38BDF8; font-weight: 800; margin-bottom: 8px;">Ready for Clinical Evaluation</h2>
-        <p style="color: #94A3B8; font-size: 1.1rem; max-width: 650px; margin: 0 auto 25px auto;">
-            Please select a sample chest X-ray from the sidebar or upload a pediatric radiograph to begin automated AI triage and Grad-CAM pathology visualization.
-        </p>
+st.markdown("""
+<div class="upload-container">
+    <div class="upload-header">
+        <span style="font-size: 1.8rem;">📤</span>
+        <div>
+            <h3 class="upload-title">STEP 1: SELECT OR UPLOAD PEDIATRIC CHEST RADIOGRAPH</h3>
+            <p class="upload-sub">Choose an instant pre-loaded clinical sample or drag-and-drop your own X-ray image below:</p>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+# Two prominent tabs on the main page for effortless interaction
+tab_upload, tab_sample = st.tabs([
+    "📤  UPLOAD RADIOGRAPH (DRAG & DROP)",
+    "📂  CHOOSE FROM 100 CLINICAL SAMPLE RADIOGRAPHS"
+])
+
+selected_image = None
+image_source_label = None
+
+with tab_upload:
+    uploaded_file = st.file_uploader(
+        "Click 'Browse files' or drag-and-drop a pediatric chest X-ray image here (PNG, JPG, JPEG):",
+        type=["png", "jpg", "jpeg"],
+        key="main_file_uploader",
+        help="Upload any pediatric chest radiograph in PNG or JPG format"
+    )
+    if uploaded_file is not None:
+        selected_image = Image.open(uploaded_file)
+        image_source_label = f"Uploaded Patient X-Ray: {uploaded_file.name}"
+
+with tab_sample:
+    test_dir = "test_images"
+    if os.path.exists(test_dir):
+        sample_files = sorted([f for f in os.listdir(test_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
+        if sample_files:
+            st.markdown("Select any benchmark test sample from the clinical cohort:")
+            sample_choice = st.selectbox(
+                "Choose a sample radiograph to diagnose instantly:",
+                sample_files,
+                index=0,
+                key="main_sample_picker"
+            )
+            # Only use sample if user hasn't uploaded a file or is currently on the sample tab
+            if uploaded_file is None:
+                selected_image = Image.open(os.path.join(test_dir, sample_choice))
+                image_source_label = f"Benchmark Sample: {sample_choice}"
+    else:
+        st.info("test_images cohort folder not detected.")
+
+# ==============================================================================
+# CLINICAL DIAGNOSTIC EVALUATION
+# ==============================================================================
+if selected_image is not None:
+    st.markdown(f"""
+    <div style="background: rgba(56, 189, 248, 0.1); border-left: 4px solid #38BDF8; padding: 10px 16px; border-radius: 6px; margin: 20px 0 25px 0;">
+        <span style="color: #38BDF8; font-weight: 800;">ACTIVE EXAMINATION:</span> <span style="color: #E2E8F0; font-weight: 600;">{image_source_label}</span>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.markdown("<br>", unsafe_allow_html=True)
-    step_col1, step_col2, step_col3 = st.columns(3)
-    
-    with step_col1:
-        st.markdown("""
-        <div class="step-card">
-            <div class="step-num">1</div>
-            <h4 style="color: #38BDF8; font-weight: 700;">Select / Upload</h4>
-            <p style="color: #94A3B8; font-size: 0.92rem;">Choose from 100 benchmark sample radiographs or upload your own pediatric X-ray.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with step_col2:
-        st.markdown("""
-        <div class="step-card">
-            <div class="step-num">2</div>
-            <h4 style="color: #818CF8; font-weight: 700;">Deep AI Inference</h4>
-            <p style="color: #94A3B8; font-size: 0.92rem;">ResNet50V2 evaluates parenchymal density & opacities with 98.4% clinical sensitivity.</p>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with step_col3:
-        st.markdown("""
-        <div class="step-card">
-            <div class="step-num">3</div>
-            <h4 style="color: #C084FC; font-weight: 700;">Grad-CAM XAI</h4>
-            <p style="color: #94A3B8; font-size: 0.92rem;">Explainable heatmap visualizes the exact anatomical focus driving the diagnosis.</p>
-        </div>
-        """, unsafe_allow_html=True)
 
-else:
-    # PREPROCESS & PREDICT
     start_t = time.time()
     processed_224 = preprocess_radiograph(selected_image)
     
@@ -434,16 +443,16 @@ else:
         confidence_pct = prob * 100
         st.markdown(f"""
         <div class="alert-box-pneumonia">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <h1 class="alert-title-red">🚨 PNEUMONIA DETECTED</h1>
                     <p class="alert-desc">
                         <b>Critical Finding:</b> Marked alveolar opacities / consolidation identified across the lung parenchymal fields.
                     </p>
                 </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(239,68,68,0.5);">
-                    <div style="color: #FCA5A5; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Confidence</div>
-                    <div style="color: #FFFFFF; font-size: 2.2rem; font-weight: 900;">{confidence_pct:.1f}%</div>
+                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(239,68,68,0.5);">
+                    <div style="color: #FCA5A5; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Confidence</div>
+                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
                 </div>
             </div>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(239, 68, 68, 0.3); font-size: 0.95rem; color: #FECACA;">
@@ -460,16 +469,16 @@ else:
         confidence_pct = (1.0 - prob) * 100
         st.markdown(f"""
         <div class="alert-box-normal">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <h1 class="alert-title-green">✅ NORMAL RADIOGRAPH</h1>
                     <p class="alert-desc">
                         <b>Clinical Finding:</b> Clear, aerated lung fields. Costophrenic and cardiophrenic angles sharp. No acute consolidations detected.
                     </p>
                 </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(16,185,129,0.5);">
-                    <div style="color: #6EE7B7; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Confidence</div>
-                    <div style="color: #FFFFFF; font-size: 2.2rem; font-weight: 900;">{confidence_pct:.1f}%</div>
+                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(16,185,129,0.5);">
+                    <div style="color: #6EE7B7; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Confidence</div>
+                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
                 </div>
             </div>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.95rem; color: #A7F3D0;">
@@ -486,16 +495,16 @@ else:
         confidence_pct = prob * 100
         st.markdown(f"""
         <div class="alert-box-risk">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <h1 class="alert-title-amber">⚠️ INDETERMINATE / HIGH-RISK</h1>
                     <p class="alert-desc">
                         <b>Clinical Finding:</b> Equivocal radiologic presentation. Subtle infiltrates or mild peribronchial cuffing detected.
                     </p>
                 </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 10px 20px; border-radius: 12px; border: 1px solid rgba(245,158,11,0.5);">
-                    <div style="color: #FDE68A; font-size: 0.85rem; font-weight: 700; text-transform: uppercase;">Uncertainty</div>
-                    <div style="color: #FFFFFF; font-size: 2.2rem; font-weight: 900;">{confidence_pct:.1f}%</div>
+                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(245,158,11,0.5);">
+                    <div style="color: #FDE68A; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Uncertainty</div>
+                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
                 </div>
             </div>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.95rem; color: #FDE68A;">
