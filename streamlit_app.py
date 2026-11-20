@@ -556,35 +556,24 @@ if selected_image is not None:
     st.markdown("<br>", unsafe_allow_html=True)
 
     # --------------------------------------------------------------------------
-    # 3-PANEL COMPARATIVE RADIOLOGY VIEWER
+    # INPUT & OUTPUT RADIOLOGY VIEWER (ONLY INPUT AND OUTPUT)
     # --------------------------------------------------------------------------
-    st.markdown("### 🔍 **Tri-Modal Diagnostic Visualization**")
+    st.markdown("### 🔬 **Diagnostic Radiograph: Input & Output**")
     
-    col_img1, col_img2, col_img3 = st.columns(3)
+    col_input, col_output = st.columns(2)
     
-    with col_img1:
+    with col_input:
         st.markdown("""
-        <div style="text-align: center; margin-bottom: 8px;">
-            <b style="color: #38BDF8; font-size: 1rem;">1. Raw Pediatric Radiograph</b>
-            <div style="font-size: 0.8rem; color: #94A3B8;">Full diagnostic input view</div>
+        <div style="text-align: center; margin-bottom: 10px; background: rgba(56, 189, 248, 0.1); padding: 8px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <b style="color: #38BDF8; font-size: 1.15rem;">📥 INPUT: Patient Chest Radiograph</b>
         </div>
         """, unsafe_allow_html=True)
         st.image(selected_image, use_container_width=True)
         
-    with col_img2:
+    with col_output:
         st.markdown("""
-        <div style="text-align: center; margin-bottom: 8px;">
-            <b style="color: #818CF8; font-size: 1rem;">2. 10% Border-Stripped Crop</b>
-            <div style="font-size: 0.8rem; color: #94A3B8;">Artifacts & ECG cables removed (224x224)</div>
-        </div>
-        """, unsafe_allow_html=True)
-        st.image(processed_224, use_container_width=True)
-        
-    with col_img3:
-        st.markdown("""
-        <div style="text-align: center; margin-bottom: 8px;">
-            <b style="color: #F43F5E; font-size: 1rem;">3. Grad-CAM Pathology Heatmap</b>
-            <div style="font-size: 0.8rem; color: #94A3B8;">Deep feature activation overlay</div>
+        <div style="text-align: center; margin-bottom: 10px; background: rgba(244, 63, 94, 0.1); padding: 8px; border-radius: 8px; border: 1px solid rgba(244, 63, 94, 0.3);">
+            <b style="color: #F43F5E; font-size: 1.15rem;">📤 OUTPUT: AI Grad-CAM Pathology Heatmap</b>
         </div>
         """, unsafe_allow_html=True)
         if cam is not None:
