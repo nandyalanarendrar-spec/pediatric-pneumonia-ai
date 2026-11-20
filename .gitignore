@@ -1,0 +1,14 @@
+# Python virtual environment
+.venv/
+env/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Private credentials (Never push API keys to public GitHub!)
+kaggle.json
+
+# Checkpoints & temp logs
+*.log
