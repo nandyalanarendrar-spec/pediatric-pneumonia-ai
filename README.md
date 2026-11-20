@@ -1,3 +1,15 @@
+---
+title: Pediatric Pneumonia AI
+emoji: 🫁
+colorFrom: indigo
+colorTo: blue
+sdk: gradio
+app_file: app.py
+pinned: false
+license: mit
+short_description: Pediatric Pneumonia Detection AI with Grad-CAM
+---
+
 # 🫁 Pediatric Pneumonia Detection AI
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
