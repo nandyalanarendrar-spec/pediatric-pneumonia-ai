@@ -363,58 +363,33 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# BIG, PROMINENT, FRONT-AND-CENTER INPUT SUITE (EASY FOR ALL USERS)
+# UPLOAD RADIOGRAPH FROM FOLDER
 # ==============================================================================
 st.markdown("""
 <div class="upload-container">
     <div class="upload-header">
-        <span style="font-size: 1.8rem;">📤</span>
+        <span style="font-size: 1.8rem;">📁</span>
         <div>
-            <h3 class="upload-title">STEP 1: SELECT OR UPLOAD PEDIATRIC CHEST RADIOGRAPH</h3>
-            <p class="upload-sub">Choose an instant pre-loaded clinical sample or drag-and-drop your own X-ray image below:</p>
+            <h3 class="upload-title">UPLOAD RADIOGRAPH FROM FOLDER</h3>
+            <p class="upload-sub">Select or drag-and-drop a pediatric chest X-ray image from your folder:</p>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
-# Two prominent tabs on the main page for effortless interaction
-tab_upload, tab_sample = st.tabs([
-    "📤  UPLOAD RADIOGRAPH (DRAG & DROP)",
-    "📂  CHOOSE FROM 100 CLINICAL SAMPLE RADIOGRAPHS"
-])
+uploaded_file = st.file_uploader(
+    "Click 'Browse files' to upload a pediatric chest X-ray from your folder (PNG, JPG, JPEG):",
+    type=["png", "jpg", "jpeg"],
+    key="main_file_uploader",
+    help="Select a pediatric chest radiograph from your local folder"
+)
 
 selected_image = None
 image_source_label = None
 
-with tab_upload:
-    uploaded_file = st.file_uploader(
-        "Click 'Browse files' or drag-and-drop a pediatric chest X-ray image here (PNG, JPG, JPEG):",
-        type=["png", "jpg", "jpeg"],
-        key="main_file_uploader",
-        help="Upload any pediatric chest radiograph in PNG or JPG format"
-    )
-    if uploaded_file is not None:
-        selected_image = Image.open(uploaded_file)
-        image_source_label = f"Uploaded Patient X-Ray: {uploaded_file.name}"
-
-with tab_sample:
-    test_dir = "test_images"
-    if os.path.exists(test_dir):
-        sample_files = sorted([f for f in os.listdir(test_dir) if f.lower().endswith(('.png', '.jpg', '.jpeg'))])
-        if sample_files:
-            st.markdown("Select any benchmark test sample from the clinical cohort:")
-            sample_choice = st.selectbox(
-                "Choose a sample radiograph to diagnose instantly:",
-                sample_files,
-                index=0,
-                key="main_sample_picker"
-            )
-            # Only use sample if user hasn't uploaded a file or is currently on the sample tab
-            if uploaded_file is None:
-                selected_image = Image.open(os.path.join(test_dir, sample_choice))
-                image_source_label = f"Benchmark Sample: {sample_choice}"
-    else:
-        st.info("test_images cohort folder not detected.")
+if uploaded_file is not None:
+    selected_image = Image.open(uploaded_file)
+    image_source_label = f"Uploaded Patient X-Ray: {uploaded_file.name}"
 
 # ==============================================================================
 # CLINICAL DIAGNOSTIC EVALUATION
@@ -434,122 +409,46 @@ if selected_image is not None:
         prob = float(model.predict(input_batch, verbose=0)[0][0])
         cam = generate_gradcam(processed_224, model)
         heatmap_img = overlay_heatmap(processed_224, cam)
-        latency_ms = int((time.time() - start_t) * 1000)
 
     # --------------------------------------------------------------------------
-    # DIAGNOSIS ALERT BANNER
+    # DIAGNOSIS ALERT BANNER (CONFIDENCE SCORE REMOVED)
     # --------------------------------------------------------------------------
     if prob >= UPPER_BOUND:
-        confidence_pct = prob * 100
         st.markdown(f"""
         <div class="alert-box-pneumonia">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <h1 class="alert-title-red">🚨 PNEUMONIA DETECTED</h1>
-                    <p class="alert-desc">
-                        <b>Critical Finding:</b> Marked alveolar opacities / consolidation identified across the lung parenchymal fields.
-                    </p>
-                </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(239,68,68,0.5);">
-                    <div style="color: #FCA5A5; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Confidence</div>
-                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
-                </div>
-            </div>
+            <h1 class="alert-title-red">🚨 PNEUMONIA DETECTED</h1>
+            <p class="alert-desc">
+                <b>Critical Finding:</b> Marked alveolar opacities / consolidation identified across the lung parenchymal fields.
+            </p>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(239, 68, 68, 0.3); font-size: 0.95rem; color: #FECACA;">
                 🏥 <b>Urgent Action:</b> High suspicion of pediatric bacterial/viral pneumonia. Prioritize for immediate clinical auscultation and pediatric physician review.
             </div>
         </div>
         """, unsafe_allow_html=True)
-        triage_status = "PNEUMONIA"
-        triage_color = "#FF4D4D"
-        tier_label = "PRIORITY 1 - IMMEDIATE"
-        tier_color = "#EF4444"
 
     elif prob <= LOWER_BOUND:
-        confidence_pct = (1.0 - prob) * 100
         st.markdown(f"""
         <div class="alert-box-normal">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <h1 class="alert-title-green">✅ NORMAL RADIOGRAPH</h1>
-                    <p class="alert-desc">
-                        <b>Clinical Finding:</b> Clear, aerated lung fields. Costophrenic and cardiophrenic angles sharp. No acute consolidations detected.
-                    </p>
-                </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(16,185,129,0.5);">
-                    <div style="color: #6EE7B7; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Confidence</div>
-                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
-                </div>
-            </div>
+            <h1 class="alert-title-green">✅ NORMAL RADIOGRAPH</h1>
+            <p class="alert-desc">
+                <b>Clinical Finding:</b> Clear, aerated lung fields. Costophrenic and cardiophrenic angles sharp. No acute consolidations detected.
+            </p>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(16, 185, 129, 0.3); font-size: 0.95rem; color: #A7F3D0;">
                 🩺 <b>Clinical Recommendation:</b> Routine follow-up. Findings negative for acute active pneumonia infiltrate.
             </div>
         </div>
         """, unsafe_allow_html=True)
-        triage_status = "NORMAL"
-        triage_color = "#10B981"
-        tier_label = "ROUTINE - CLEAR"
-        tier_color = "#10B981"
 
     else:
-        confidence_pct = prob * 100
         st.markdown(f"""
         <div class="alert-box-risk">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
-                <div>
-                    <h1 class="alert-title-amber">⚠️ INDETERMINATE / HIGH-RISK</h1>
-                    <p class="alert-desc">
-                        <b>Clinical Finding:</b> Equivocal radiologic presentation. Subtle infiltrates or mild peribronchial cuffing detected.
-                    </p>
-                </div>
-                <div style="text-align: right; background: rgba(0,0,0,0.3); padding: 12px 24px; border-radius: 14px; border: 1.5px solid rgba(245,158,11,0.5);">
-                    <div style="color: #FDE68A; font-size: 0.85rem; font-weight: 800; text-transform: uppercase;">Uncertainty</div>
-                    <div style="color: #FFFFFF; font-size: 2.3rem; font-weight: 900;">{confidence_pct:.1f}%</div>
-                </div>
-            </div>
+            <h1 class="alert-title-amber">⚠️ INDETERMINATE / HIGH-RISK</h1>
+            <p class="alert-desc">
+                <b>Clinical Finding:</b> Equivocal radiologic presentation. Subtle infiltrates or mild peribronchial cuffing detected.
+            </p>
             <div style="margin-top: 15px; padding-top: 12px; border-top: 1px solid rgba(245, 158, 11, 0.3); font-size: 0.95rem; color: #FDE68A;">
                 🔬 <b>Clinical Recommendation:</b> Repeat radiograph in 24–48 hours or obtain supplementary CRP/WBC clinical biomarkers.
             </div>
-        </div>
-        """, unsafe_allow_html=True)
-        triage_status = "INDETERMINATE"
-        triage_color = "#FBBF24"
-        tier_label = "PRIORITY 2 - REVIEW"
-        tier_color = "#F59E0B"
-
-    # --------------------------------------------------------------------------
-    # 4 VIBRANT KPI METRIC TILES
-    # --------------------------------------------------------------------------
-    m1, m2, m3, m4 = st.columns(4)
-    with m1:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">Diagnosis</div>
-            <div class="kpi-value" style="color: {triage_color};">{triage_status}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with m2:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">Confidence Score</div>
-            <div class="kpi-value" style="color: #38BDF8;">{confidence_pct:.1f}%</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with m3:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">Triage Priority</div>
-            <div class="kpi-value" style="color: {tier_color}; font-size: 1.15rem; padding-top: 6px;">{tier_label}</div>
-        </div>
-        """, unsafe_allow_html=True)
-        
-    with m4:
-        st.markdown(f"""
-        <div class="kpi-card">
-            <div class="kpi-label">Inference Latency</div>
-            <div class="kpi-value" style="color: #C084FC;">{latency_ms} ms</div>
         </div>
         """, unsafe_allow_html=True)
 
